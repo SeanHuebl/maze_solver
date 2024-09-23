@@ -3,7 +3,7 @@ from window import Window
 
 
 
-def main():
+def main() -> None:
     win = Window(800, 600)
     
     # Testing the draw_line method

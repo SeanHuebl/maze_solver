@@ -18,7 +18,7 @@ class Window():
         self.__root_widget.update_idletasks()
         self.__root_widget.update()
 
-    def wait_for_close(self):
+    def wait_for_close(self) -> None:
         self.running = True
 
         while self.running == True:
