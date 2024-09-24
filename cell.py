@@ -1,13 +1,13 @@
-from typing import Tuple
-
 from line import Point, Line
 from window import Window
 
 class Cell():
     def __init__(self,
-                x1: int, y1: int, x2: int, y2: int,
-                window: Window,
-                ) -> None:
+                x1: int,
+                y1: int,
+                x2: int,
+                y2: int,
+                window: Window) -> None:
         
         self._x1 = x1
         self._y1 = y1
@@ -20,5 +20,26 @@ class Cell():
         self.has_top_wall = True
         self.has_bottom_wall = True
     
-    def draw(self, top_left_coordinates: Tuple[int, int], bottom_right_coordinates: Tuple[int, int]) -> None:
-        pass
+    def draw(self) -> None:
+
+        top_left_vertex = Point(self._x1, self._y1)
+        top_right_vertex = Point(self._x2, self._y1)
+        bottom_left_vertex = Point(self._x1, self._y2)
+        bottom_right_vertex = Point(self._x2, self._y2)
+
+        left_wall = Line(top_left_vertex, bottom_left_vertex)
+        right_wall = Line(top_right_vertex, bottom_right_vertex)
+        top_wall = Line(top_left_vertex, top_right_vertex)
+        bottom_wall = Line(bottom_left_vertex, bottom_right_vertex)
+        
+        if self.has_left_wall == True:
+            left_wall.draw(self._win, 'black')
+
+        if self.has_right_wall == True:
+            right_wall.draw(self._win, 'black')
+
+        if self.has_top_wall == True:
+            top_wall.draw(self._win, 'black')
+
+        if self.has_bottom_wall == True:
+            bottom_wall.draw(self._win, 'black')
