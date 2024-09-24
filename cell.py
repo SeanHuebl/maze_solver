@@ -33,13 +33,28 @@ class Cell():
         bottom_wall = Line(bottom_left_vertex, bottom_right_vertex)
         
         if self.has_left_wall == True:
-            left_wall.draw(self._win, 'black')
+            left_wall.draw(self._win.canvas, 'black')
 
         if self.has_right_wall == True:
-            right_wall.draw(self._win, 'black')
+            right_wall.draw(self._win.canvas, 'black')
 
         if self.has_top_wall == True:
-            top_wall.draw(self._win, 'black')
+            top_wall.draw(self._win.canvas, 'black')
 
         if self.has_bottom_wall == True:
-            bottom_wall.draw(self._win, 'black')
+            bottom_wall.draw(self._win.canvas, 'black')
+
+    def draw_move(self, to_cell, undo=False):
+
+        self_center = Point((self._x1 + self._x2) / 2,
+                            (self._y1 + self._y2) / 2)
+
+        to_cell_center = Point((to_cell._x1 + to_cell._x2) / 2,
+                               (to_cell._y1 + to_cell._y2) / 2)
+
+        center_to_center = Line(self_center, to_cell_center)
+
+        if undo == False:
+            center_to_center.draw(self._win.canvas, 'red')
+        else:
+            center_to_center.draw(self._win.canvas, 'gray')
