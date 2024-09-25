@@ -37,15 +37,23 @@ class Cell():
         if self._win is not None:
             if self.has_left_wall == True:
                 left_wall.draw(self._win.canvas, 'black')
+            else:
+                left_wall.draw(self._win.canvas, 'white')
 
             if self.has_right_wall == True:
                 right_wall.draw(self._win.canvas, 'black')
+            else:
+                right_wall.draw(self._win.canvas, 'white')
 
             if self.has_top_wall == True:
                 top_wall.draw(self._win.canvas, 'black')
+            else:
+                top_wall.draw(self._win.canvas, 'white')
 
             if self.has_bottom_wall == True:
                 bottom_wall.draw(self._win.canvas, 'black')
+            else:
+                bottom_wall.draw(self._win.canvas, 'white')
 
     def draw_move(self, to_cell, undo=False):
 

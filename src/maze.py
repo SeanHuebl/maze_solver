@@ -26,7 +26,7 @@ class Maze():
         self._create_cells()
 
     def _create_cells(self) -> None:
-        self._cells = [[Cell(self._win) for _ in range(self.num_rows)] for _ in range(self.num_cols)]
+        self._cells = [[Cell(window=self._win) for _ in range(self.num_rows)] for _ in range(self.num_cols)]
 
         for i, row in enumerate(self._cells):
             for j, cell in enumerate(row):
@@ -44,6 +44,13 @@ class Maze():
         self._animate()
         
     def _animate(self):
-        if self._win is not None:
+        if self._win:
             self._win.redraw()
             sleep(.05)
+
+    def _break_entrance_and_exit(self):
+        self._cells[0][0].has_top_wall = False
+        self._draw_cell(0, 0)
+
+        self._cells[-1][-1].has_bottom_wall = False
+        self._draw_cell(self.num_cols - 1, self.num_rows - 1)
