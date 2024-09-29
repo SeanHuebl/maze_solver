@@ -73,28 +73,111 @@ class Maze():
             for direction in directions:
                 if direction[0] < 0 or direction[1] < 0:
                     continue
-                if direction[0] > len(self._cells):
+                if direction[0] >= self.num_cols:
                     continue
-                if direction[1] > len(self._cells[0]):
+                if direction[1] >= self.num_rows:
                     continue
                 if self._cells[direction[0]][direction[1]].visited == False:
-                    if direction not in to_visit:
                         to_visit.append(direction)
+
             if len(to_visit) == 0:
                 return
             else:
-                move = random.randrange(0, len(to_visit))
-                direction = to_visit[move]
+                next_i, next_j = random.choice(to_visit)
+
+                direction = (next_i, next_j)
                 cell = self._cells[i][j]
+
                 if  direction == right:
                     cell.has_right_wall = False
+                    self._cells[next_i][next_j].has_left_wall = False
+
                 elif direction == left:
                     cell.has_left_wall = False
+                    self._cells[next_i][next_j].has_right_wall = False
                 elif direction == top:
                     cell.has_top_wall = False
+                    self._cells[next_i][next_j].has_bottom_wall = False
                 else:
                     cell.has_bottom_wall = False
-                cell.draw()
+                    self._cells[next_i][next_j].has_top_wall = False
+                self._draw_cell(i, j)
 
-                i, j = to_visit[move]
-                self._break_walls_r(i, j)
+                self._break_walls_r(next_i, next_j)
+    
+    def _reset_cells_visited(self) -> None:
+        for col in self._cells:
+            for cell in col:
+                cell.visited = False
+    
+    def solve(self) -> bool:
+        return self._solve_r(0, 0)
+    
+    def _solve_r(self, i: int, j: int) -> bool:
+        self._animate()
+        current = self._cells[i][j]
+        current.visited = True
+        if current == self._cells[-1][-1]:
+            return True
+        
+        right = (i + 1, j)
+        left = (i - 1, j)
+        top = (i, j - 1)
+        bottom = (i, j + 1)
+        
+        directions = [right, left, top, bottom]
+
+        for direction in directions:
+            d_i, d_j = direction
+            if self._cells[d_i][d_j] and self._cells[d_i][d_j].visited == False:
+
+                if direction == right:
+                    if not self._wall_check(i, j, 'right'):
+                        current.draw_move(self._cells[d_i][d_j])
+                        if self._solve_r(d_i, d_j):
+                            return True
+                        
+                elif direction == left:
+                    if not self._wall_check(i, j, 'left'):
+                        current.draw_move(self._cells[d_i][d_j])
+                        if self._solve_r(d_i, d_j):
+                            return True
+                        
+                elif direction == top:
+                    if not self._wall_check(i, j, 'top'):
+                        current.draw_move(self._cells[d_i][d_j])
+                        if self._solve_r(d_i, d_j):
+                            return True
+                        
+                elif direction == bottom:
+                    if not self._wall_check(i, j, 'bottom'):
+                        current.draw_move(self._cells[d_i][d_j])
+                        if self._solve_r(d_i, d_j):
+                            return True
+                else:
+                    return False
+                
+    def _wall_check(self, i: int, j: int, direction: str) -> bool:
+        cell = self._cells[i][j]
+        if direction == 'right':
+            if cell.has_right_wall:
+                return True
+            else:
+                return False
+        if direction == 'left':
+            if cell.has_left_wall:
+                return True
+            else:
+                return False
+        
+        if direction == 'top':
+            if cell.has_top_wall:
+                return True
+            else:
+                return False
+        
+        if direction == 'bottom':
+            if cell.has_bottom_wall:
+                return True
+            else:
+                return False
