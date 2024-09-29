@@ -50,7 +50,7 @@ class Maze():
     def _animate(self) -> None:
         if self._win:
             self._win.redraw()
-            sleep(.05)
+            sleep(.025)
 
     def _break_entrance_and_exit(self) -> None:
         self._cells[0][0].has_top_wall = False
@@ -71,17 +71,19 @@ class Maze():
             directions = (right, left, top, bottom)
 
             for direction in directions:
-                if direction[0] < 0 or direction[1] < 0:
+                d_i, d_j = direction
+
+                if d_i < 0 or d_j < 0:
                     continue
-                if direction[0] >= self.num_cols:
+                if d_i >= self.num_cols or d_j >= self.num_rows:
                     continue
-                if direction[1] >= self.num_rows:
-                    continue
-                if self._cells[direction[0]][direction[1]].visited == False:
+                
+                if self._cells[d_i][d_j].visited == False:
                         to_visit.append(direction)
 
             if len(to_visit) == 0:
                 return
+            
             else:
                 next_i, next_j = random.choice(to_visit)
 
@@ -89,18 +91,24 @@ class Maze():
                 cell = self._cells[i][j]
 
                 if  direction == right:
+
                     cell.has_right_wall = False
                     self._cells[next_i][next_j].has_left_wall = False
 
                 elif direction == left:
+
                     cell.has_left_wall = False
                     self._cells[next_i][next_j].has_right_wall = False
+
                 elif direction == top:
+
                     cell.has_top_wall = False
                     self._cells[next_i][next_j].has_bottom_wall = False
+
                 else:
                     cell.has_bottom_wall = False
                     self._cells[next_i][next_j].has_top_wall = False
+                    
                 self._draw_cell(i, j)
 
                 self._break_walls_r(next_i, next_j)
@@ -128,7 +136,15 @@ class Maze():
         directions = [right, left, top, bottom]
 
         for direction in directions:
+            
             d_i, d_j = direction
+
+            if d_i < 0 or d_j < 0:
+                    continue
+            if d_i >= self.num_cols or d_j >= self.num_rows:
+                    continue
+
+            
             if self._cells[d_i][d_j] and self._cells[d_i][d_j].visited == False:
 
                 if direction == right:
@@ -136,24 +152,29 @@ class Maze():
                         current.draw_move(self._cells[d_i][d_j])
                         if self._solve_r(d_i, d_j):
                             return True
-                        
+                        else:
+                            current.draw_move(self._cells[d_i][d_j], undo=True)
                 elif direction == left:
                     if not self._wall_check(i, j, 'left'):
                         current.draw_move(self._cells[d_i][d_j])
                         if self._solve_r(d_i, d_j):
                             return True
-                        
+                        else:
+                            current.draw_move(self._cells[d_i][d_j], undo=True)
                 elif direction == top:
                     if not self._wall_check(i, j, 'top'):
                         current.draw_move(self._cells[d_i][d_j])
                         if self._solve_r(d_i, d_j):
                             return True
-                        
+                        else:
+                            current.draw_move(self._cells[d_i][d_j], undo=True)
                 elif direction == bottom:
                     if not self._wall_check(i, j, 'bottom'):
                         current.draw_move(self._cells[d_i][d_j])
                         if self._solve_r(d_i, d_j):
                             return True
+                        else:
+                            current.draw_move(self._cells[d_i][d_j], undo=True)
                 else:
                     return False
                 
