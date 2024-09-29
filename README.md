@@ -36,8 +36,8 @@ To run this project, you will need to install a few dependencies. Below are the 
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone [<repository-url>](https://github.com/SeanHuebl/maze_solver)
+   cd maze_solver/
    ```
 
 2. **Install Dependencies**:
